@@ -1,0 +1,50 @@
+"use client";
+
+import React, { createContext, useContext, ReactNode } from 'react';
+import type { FirebaseApp } from 'firebase/app';
+import type { Auth } from 'firebase/auth';
+
+interface FirebaseContextValue {
+  firebaseApp: FirebaseApp | null;
+  auth: Auth | null;
+}
+
+const FirebaseContext = createContext<FirebaseContextValue | undefined>(undefined);
+
+interface FirebaseProviderProps {
+  children: ReactNode;
+  firebaseApp: FirebaseApp | null;
+  auth: Auth | null;
+}
+
+export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children, firebaseApp, auth }) => {
+  return (
+    <FirebaseContext.Provider value={{ firebaseApp, auth }}>
+      {children}
+    </FirebaseContext.Provider>
+  );
+};
+
+export const useFirebase = (): FirebaseContextValue => {
+  const context = useContext(FirebaseContext);
+  if (context === undefined) {
+    throw new Error('useFirebase must be used within a FirebaseProvider');
+  }
+  return context;
+};
+
+export const useFirebaseApp = (): FirebaseApp => {
+  const { firebaseApp } = useFirebase();
+  if (!firebaseApp) {
+    throw new Error('Firebase app not available. Ensure you are wrapped in a FirebaseProvider.');
+  }
+  return firebaseApp;
+};
+
+export const useAuth = (): Auth => {
+  const { auth } = useFirebase();
+  if (!auth) {
+    throw new Error('Firebase Auth not available. Ensure you are wrapped in a FirebaseProvider.');
+  }
+  return auth;
+};
