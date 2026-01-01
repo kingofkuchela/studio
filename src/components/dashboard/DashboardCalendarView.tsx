@@ -43,12 +43,12 @@ export default function DashboardCalendarView({ isExpanded, onToggleExpand, clas
 
   function CustomDayContent(props: DayProps) {
     if (!props.displayMonth) {
-      return <div />;
+      return <td role="gridcell" aria-selected="false" className="rdp-cell" />;
     }
     const isOutsideMonth = props.displayMonth.getMonth() !== props.date.getMonth();
     
     if (isOutsideMonth) {
-      return <div className="flex flex-col items-start justify-start text-left w-full h-full rounded-md bg-transparent" />;
+      return <td className="flex flex-col items-start justify-start text-left w-full h-full rounded-md bg-transparent" />;
     }
 
     const buttonProps = (props as any).buttonProps || {} as React.ButtonHTMLAttributes<HTMLButtonElement>;
