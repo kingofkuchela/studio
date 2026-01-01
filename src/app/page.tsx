@@ -8,8 +8,7 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Since there is no login, redirect directly to the main app page.
-    router.replace('/journal-entry');
+    router.replace('/dashboard');
   }, [router]);
 
   // Show a loading skeleton while redirecting

@@ -33,10 +33,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/journal-entry', label: 'Journal Entry', icon: BookText },
   { href: '/link', label: 'Time Blocks', icon: Clock },
   { href: '/logical-blocks', label: 'Logical Blocks', icon: GitBranch },
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/trades', label: 'Trades', icon: CandlestickChart },
   { href: '/strategies', label: 'Edges', icon: Settings2 },
   { href: '/short-edges', label: 'Short Edge', icon: TrendingDown },
