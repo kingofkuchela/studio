@@ -1,5 +1,5 @@
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { PT_Sans, Playfair_Display, Source_Code_Pro, Oswald } from 'next/font/google';
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -35,6 +35,9 @@ export const metadata: Metadata = {
   title: "TradeVision",
   description: "Your personal trading journal and analysis tool.",
   manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
   themeColor: "#F0F5FA",
 };
 

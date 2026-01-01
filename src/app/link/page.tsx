@@ -720,6 +720,9 @@ export default function LinkPage() {
 
     function BlockDatePickerDay(props: DayProps) {
         const { date, displayMonth } = props;
+        if (!displayMonth) {
+            return <div />;
+        }
         const buttonProps = (props as any).buttonProps || {};
 
         const isOutsideMonth = displayMonth.getMonth() !== date.getMonth();
@@ -1038,6 +1041,9 @@ function EventCalendar({ events, selectedDate, setSelectedDate }: { events: Glob
 
     function EventDayContent(props: DayProps) {
         const { date, displayMonth } = props;
+        if (!displayMonth) {
+            return <div />;
+        }
         const isOutsideMonth = displayMonth.getMonth() !== date.getMonth();
         if (isOutsideMonth) {
             return <div className="flex flex-col items-start justify-start text-left w-full h-full rounded-md bg-transparent" />;
@@ -1102,12 +1108,3 @@ function EventCalendar({ events, selectedDate, setSelectedDate }: { events: Glob
         />
     );
 }
-
-    
-
-    
-
-
-
-
-
