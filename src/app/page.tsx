@@ -1,25 +1,18 @@
-
 "use client";
 
-import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function HomePage() {
-  const { user, loading } = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading) {
-      if (user) {
-        router.replace('/journal-entry');
-      } else {
-        router.replace('/login');
-      }
-    }
-  }, [user, loading, router]);
+    // Since there is no login, redirect directly to the main app page.
+    router.replace('/journal-entry');
+  }, [router]);
 
+  // Show a loading skeleton while redirecting
   return (
       <div className="flex h-screen w-screen items-center justify-center">
           <div className="flex flex-col items-center gap-4">

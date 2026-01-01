@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { ReactNode, useState, useMemo, useEffect, useCallback, useRef } from 'react';
@@ -26,8 +25,6 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import { useUser, useAuth } from '@/firebase';
-import { signOut } from 'firebase/auth';
 
 interface NavItem {
   href: string;
@@ -78,27 +75,11 @@ function MainLayoutContent({
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      router.push('/login');
-    } catch (error) {
-      console.error("Error signing out: ", error);
-      toast({
-        variant: "destructive",
-        title: "Sign Out Failed",
-        description: "Could not sign you out. Please try again.",
-      });
-    }
-  };
 
   const getPageTitle = useCallback(() => {
     const allNavItems = [...navItems];
@@ -327,15 +308,6 @@ function MainLayoutContent({
               >
                 <Mail />
                 <span>Email Backup</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={handleSignOut}
-                tooltip={{ children: "Sign Out", side: "right", className: "ml-2" }}
-              >
-                <LogOut />
-                <span>Sign Out</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
