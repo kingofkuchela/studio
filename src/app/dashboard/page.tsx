@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo, useState } from 'react';
@@ -62,6 +63,15 @@ export default function DashboardPage() {
     const cumulativePnlData = useMemo(() => generateCumulativePnlData(trades), [trades]);
     const pnlCandlestickData = useMemo(() => generatePnlCandlestickData(trades, candlestickAggregation), [trades, candlestickAggregation]);
     const dailyProfitLossData = useMemo(() => generateDailyProfitLossData(trades), [trades]);
+
+    const candlestickYAxisDomain = useMemo(() => {
+        if (pnlCandlestickData.length === 0) return [0, 0];
+        const allValues = pnlCandlestickData.flatMap(d => d.rangeForBar);
+        const min = Math.min(...allValues);
+        const max = Math.max(...allValues);
+        const padding = (max - min) * 0.1;
+        return [min - padding, max + padding];
+    }, [pnlCandlestickData]);
     
     if (isLoading) {
         return (
@@ -76,16 +86,6 @@ export default function DashboardPage() {
             </MainLayout>
         );
     }
-
-    const candlestickYAxisDomain = useMemo(() => {
-        if (pnlCandlestickData.length === 0) return [0, 0];
-        const allValues = pnlCandlestickData.flatMap(d => d.rangeForBar);
-        const min = Math.min(...allValues);
-        const max = Math.max(...allValues);
-        const padding = (max - min) * 0.1;
-        return [min - padding, max + padding];
-    }, [pnlCandlestickData]);
-    
 
     return (
         <MainLayout>
