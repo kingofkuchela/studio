@@ -28,9 +28,9 @@ export default function DashboardCalendarView({ isExpanded, onToggleExpand, clas
 
   const trades = React.useMemo(() => {
     if (tradingMode === 'both') {
-      return [...allTrades.real, ...allTrades.theoretical];
+      return [...(allTrades.real || []), ...(allTrades.theoretical || [])];
     }
-    return allTrades[tradingMode];
+    return allTrades[tradingMode] || [];
   }, [allTrades, tradingMode]);
 
   useEffect(() => {
@@ -42,6 +42,9 @@ export default function DashboardCalendarView({ isExpanded, onToggleExpand, clas
   }, [trades, appContextIsLoading]);
 
   function CustomDayContent(props: DayProps) {
+    if (!props.displayMonth) {
+      return <div />;
+    }
     const isOutsideMonth = props.displayMonth.getMonth() !== props.date.getMonth();
     
     if (isOutsideMonth) {
