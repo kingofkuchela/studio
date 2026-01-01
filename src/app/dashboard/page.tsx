@@ -47,14 +47,16 @@ const DailyPnlTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function DashboardPage() {
-    const { trades: allTradesForMode, edges, isLoading, tradingMode } = useAppContext();
+    const { allTrades, edges, isLoading, tradingMode } = useAppContext();
+
     const trades = useMemo(() => {
+        const allTradesForMode = allTrades || { real: [], theoretical: [] };
         if (tradingMode === 'both') {
             const combined = [...allTradesForMode.real, ...allTradesForMode.theoretical];
             return Array.from(new Map(combined.map(t => [t.id, t])).values());
         }
-        return allTradesForMode[tradingMode];
-    }, [allTradesForMode, tradingMode]);
+        return allTradesForMode[tradingMode] || [];
+    }, [allTrades, tradingMode]);
 
     const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
     const [candlestickAggregation, setCandlestickAggregation] = useState<CandlestickAggregationLevel>('day');
@@ -95,8 +97,8 @@ export default function DashboardPage() {
                     <SummaryCard title="Win Rate" value={`${dashboardMetrics.winLossRatio.toFixed(1)}%`} description={`${dashboardMetrics.wins} W / ${dashboardMetrics.losses} L`} icon={Percent} />
                     <SummaryCard title="Profit Factor" value={dashboardMetrics.profitFactor === Infinity ? "∞" : isNaN(dashboardMetrics.profitFactor) ? "N/A" : dashboardMetrics.profitFactor.toFixed(2)} description="Gross Profit / Gross Loss" icon={Flame} />
                     <SummaryCard title="Risk Reward" value={isFinite(dashboardMetrics.riskRewardRatio) ? `${dashboardMetrics.riskRewardRatio.toFixed(2)}:1` : 'N/A'} description="Avg Win / Avg Loss" icon={ArrowRightLeft} />
-                    <SummaryCard title="Automated Trades" value={trades.filter(t => t.source === 'automated').length} description="Trades from automation engine" icon={Bot} />
-                    <SummaryCard title="Manual Trades" value={trades.filter(t => t.source === 'manual').length} description="Trades entered manually" icon={User} />
+                    <SummaryCard title="Automated Trades" value={(trades || []).filter(t => t.source === 'automated').length} description="Trades from automation engine" icon={Bot} />
+                    <SummaryCard title="Manual Trades" value={(trades || []).filter(t => t.source === 'manual').length} description="Trades entered manually" icon={User} />
                 </div>
 
                 <div className={cn("grid grid-cols-1 gap-6", isCalendarExpanded ? "hidden" : "lg:grid-cols-3")}>
