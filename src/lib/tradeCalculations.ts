@@ -107,7 +107,7 @@ export const calculateTradeCharges = (trade: Trade): number => {
 
 
 export const calculateDashboardMetrics = (trades: Trade[], edges: Edge[]) => {
-  const enrichedTrades = trades.map(enrichTrade).filter(trade => trade.outcome !== 'Open'); 
+  const enrichedTrades = (trades || []).map(enrichTrade).filter(trade => trade.outcome !== 'Open'); 
 
   const totalPnl = enrichedTrades.reduce((acc, trade) => acc + (trade.pnl ?? 0), 0);
   const totalCharges = enrichedTrades.reduce((acc, trade) => acc + calculateTradeCharges(trade), 0);
@@ -182,7 +182,7 @@ export interface CumulativePnlDataPoint {
 }
 
 export const generateCumulativePnlData = (trades: Trade[]): CumulativePnlDataPoint[] => {
-  const closedTrades = trades.filter(trade => trade.outcome !== 'Open' && trade.exitTime)
+  const closedTrades = (trades || []).filter(trade => trade.outcome !== 'Open' && trade.exitTime)
                            .map(trade => (trade.pnl === undefined || trade.exitTime === undefined) ? enrichTrade(trade) : trade)
                            .sort((a, b) => new Date(a.exitTime!).getTime() - new Date(b.exitTime!).getTime());
   
@@ -214,7 +214,7 @@ export const generatePnlCandlestickData = (
   trades: Trade[],
   aggregation: CandlestickAggregationLevel
 ): DailyCandlestickData[] => {
-  const closedTradesForAggregation = trades 
+  const closedTradesForAggregation = (trades || []) 
     .filter(trade => trade.outcome !== 'Open' && trade.exitTime)
     .map(trade => enrichTrade(trade))
     .sort((a, b) => new Date(a.exitTime!).getTime() - new Date(b.exitTime!).getTime());
@@ -310,7 +310,7 @@ export const generatePnlCandlestickData = (
 
 
 export const generateDailyProfitLossData = (trades: Trade[]): DailyProfitLossDataPoint[] => {
-  const closedTrades = trades.filter(trade => trade.outcome !== 'Open' && trade.exitTime);
+  const closedTrades = (trades || []).filter(trade => trade.outcome !== 'Open' && trade.exitTime);
   if (!closedTrades || closedTrades.length === 0) {
     return [];
   }
