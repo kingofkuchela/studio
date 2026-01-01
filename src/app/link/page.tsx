@@ -1040,10 +1040,10 @@ function EventCalendar({ events, selectedDate, setSelectedDate }: { events: Glob
     }, [events]);
 
     function EventDayContent(props: DayProps) {
-        const { date, displayMonth } = props;
-        if (!displayMonth) {
-            return <div />;
+        if (!props.displayMonth) {
+          return <div />;
         }
+        const { date, displayMonth } = props;
         const isOutsideMonth = displayMonth.getMonth() !== date.getMonth();
         if (isOutsideMonth) {
             return <div className="flex flex-col items-start justify-start text-left w-full h-full rounded-md bg-transparent" />;
